@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const contactsOperations = require("../../model");
+const { productSchema } = require("../../validation");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -29,6 +30,13 @@ router.get("/:contactId", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
+    const { error } = productSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        message: error.message,
+      });
+    }
+
     const newContact = await contactsOperations.addContact(req.body);
     res.status(201).json({ newContact });
   } catch (error) {
