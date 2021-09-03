@@ -48,8 +48,27 @@ router.delete("/:contactId", async (req, res, next) => {
   res.json({ message: "template message" });
 });
 
-router.patch("/:contactId", async (req, res, next) => {
-  res.json({ message: "template message" });
+router.put("/:contactId", async (req, res, next) => {
+  try {
+    const { error } = productSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        message: error.message,
+      });
+    }
+
+    const { contactId } = req.params;
+    const contact = await contactsOperations.updateContact(contactId, req.body);
+    if (!contact) {
+      return res.status(404).json({
+        message: "Not found",
+      });
+    }
+
+    res.json({ contact });
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

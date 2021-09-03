@@ -11,7 +11,7 @@ const listContacts = async () => {
     const contacts = JSON.parse(data);
     return contacts;
   } catch (error) {
-    throw error;
+    // throw error;
   }
 };
 
@@ -24,7 +24,7 @@ const getContactById = async (contactId) => {
     }
     return selectContact;
   } catch (error) {
-    throw error;
+    // throw error;
   }
 };
 
@@ -46,11 +46,24 @@ const addContact = async (body) => {
     await fs.writeFile(filePath, newContactsString);
     return addContact;
   } catch (error) {
-    throw error;
+    // throw error;
   }
 };
 
-const updateContact = async (contactId, body) => {};
+const updateContact = async (contactId, body) => {
+  try {
+    const contacts = await listContacts();
+    const idx = contacts.findIndex((item) => item.id === +contactId);
+    if (idx === -1) {
+      return null;
+    }
+    contacts[idx] = { ...contacts[idx], ...body };
+    await fs.writeFile(filePath, JSON.stringify(contacts));
+    return contacts[idx];
+  } catch (error) {
+    throw error;
+  }
+};
 
 module.exports = {
   listContacts,
