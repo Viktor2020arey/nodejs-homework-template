@@ -28,7 +28,21 @@ const getContactById = async (contactId) => {
   }
 };
 
-const removeContact = async (contactId) => {};
+const removeContact = async (contactId) => {
+  try {
+    const contacts = await listContacts();
+    const idx = contacts.findIndex((contact) => contact.id === +contactId);
+    if (idx === -1) {
+      return null;
+    }
+    const newContacts = contacts.filter((contact) => contact.id !== +contactId);
+    const newContactsString = JSON.stringify(newContacts);
+    await fs.writeFile(filePath, newContactsString);
+    return contacts[idx];
+  } catch (error) {
+    throw error;
+  }
+};
 
 const addContact = async (body) => {
   try {
