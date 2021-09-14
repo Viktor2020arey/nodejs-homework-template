@@ -1,7 +1,24 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
-const contactSchema = Schema({}, { versionKey: false, timestamps: true });
+const contactSchema = Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      // match: emailRegexp,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+  },
+  { versionKey: false, timestamps: true }
+);
 
 const validNumber =
   /^(\+)?(\(\d{2,3}\) ?\d|\d)(([ \-]?\d)|( ?\(\d{2,3}\) ?)){5,12}\d$/;
