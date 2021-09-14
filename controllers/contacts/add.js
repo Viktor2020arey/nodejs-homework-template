@@ -1,6 +1,8 @@
 const contactsOperations = require("../../model/contacts");
 const { productSchema } = require("../../validation");
 
+// const { Contact } = require("./models");
+
 const add = async (req, res, next) => {
   try {
     const { error } = productSchema.validate(req.body);
