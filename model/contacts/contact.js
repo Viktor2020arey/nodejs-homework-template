@@ -5,16 +5,19 @@ const contactSchema = Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Set name for contact"],
     },
     email: {
       type: String,
-      required: true,
-      // match: emailRegexp,
+      required: [true, "Please enter email"],
     },
     phone: {
       type: String,
-      required: true,
+      required: [true, "Please enter phone"],
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
     },
   },
   { versionKey: false, timestamps: true }
@@ -29,9 +32,14 @@ const joiSchema = Joi.object({
   phone: Joi.string().pattern(validNumber).required(),
 });
 
+const JoiFavoriteSchema = Joi.object({
+  favorite: Joi.boolean(),
+});
+
 const Contact = model("contact", contactSchema);
 
 module.exports = {
   Contact,
   joiSchema,
+  JoiFavoriteSchema,
 };
